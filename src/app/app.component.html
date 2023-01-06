@@ -17,9 +17,9 @@
             <input type="text" name="desc" ngModel>
         
             <label>Employee Rank</label>
-            <input type="text" name="rank" ngModel>
+            <input type="text" name="rank" ngModel> 
   
-            <input type="submit" value="Add Employee">
+            <input type="submit" value="{{editMode ? 'Update Employee' : 'Add Employee'}}">
           </form>
         </div>
   
@@ -34,20 +34,30 @@
               <th>Rank</th>
               <th></th>
             </tr>
-            <tr>
-              <td>1</td>
-              <td>Ram</td>
-              <td>Java Dev</td>
-              <td>A2</td>
-              <td><button class="btn-delete">Delete</button></td>
+
+            <tr *ngIf="allEmployees.length < 1 && !isFetching">
+              <td colspan="5">No Employee Details Available!</td>
             </tr>
+            <tr *ngIf="isFetching">
+              <td colspan="5">Loading...</td>
+            </tr>
+
+            <tr *ngFor="let empl of allEmployees; index as i">
+              <td>{{i+1 }}</td>
+              <td>{{empl.ename}}</td>
+              <td>{{empl.desc}}</td>
+              <td>{{empl.rank}}</td>
+              <td>
+                <button class="btn-delete" (click)="onDeleteEmployee(empl.id)">Delete</button>
+                <button class="btn-edit" (click)="onEditClicked(empl.id)">Edit</button></td>
+                </tr>
           </table>
           <hr>
-          <!-- <div class="action-btn-container">
-            <button class="btn-fetch">Fetch Employee</button>
-            <button class="btn-clear">Clear Employee </button>
-          </div> -->
-        </div>
+          <div class="action-btn-container">
+            <button class="btn-fetch" (click)="onEmployeeFetch()">Fetch Employees</button>
+            <button class="btn-clear" (click)="onDeleteAllEmployee()">Clear Employees </button>
+          </div>
+         </div>
       </div>
     </div>
   </div>
